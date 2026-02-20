@@ -13,13 +13,20 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Cache Flutter packages
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.pub-cache
+          key: ${{ runner.os }}-flutter-${{ hashFiles('**/pubspec.yaml') }}
+
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.13.0'  # <-- Use the Flutter version your project uses locally
+          flutter-version: '3.13.0' # <-- match your local Flutter version
 
       - name: Install dependencies
-        run: flutter pub get
+        run: flutter pub get -v
 
       - name: Get version from pubspec.yaml
         id: get_version
